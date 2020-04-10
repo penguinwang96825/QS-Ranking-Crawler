@@ -95,7 +95,7 @@ def visualise_qs_ranking(df, year, top_ranking, num):
     ax.set_xticks(np.arange(0, top['location'].value_counts()[0]+2, 1))
 ```
 
-##
+## Do some visualisation
 ```python
 qs_2020 = get_qs_ranking_dataframe(year=2020, page=40)
 qs_2020[(qs_2020["location"] == "Japan") & (qs_2020["ranking"] <= 100)]
