@@ -1,5 +1,5 @@
-# QS_ranking_web_scraping
-A tutorial to build a web scraper by using beautifulsoup and selenium.
+# QS Ranking Web Scraping
+A note to build a web scraper by using beautifulsoup and selenium.
 
 ## Import packages
 Download chrome web dirver first. [[Click here](https://sites.google.com/a/chromium.org/chromedriver/)]
