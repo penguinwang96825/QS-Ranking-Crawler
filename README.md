@@ -2,6 +2,7 @@
 A tutorial to build a web scraper by using beautifulsoup and selenium.
 
 ## Import packages
+Download chrome web dirver first. [[Click here](https://sites.google.com/a/chromium.org/chromedriver/)]
 ```python
 import pandas as pd
 import numpy as np
@@ -14,7 +15,7 @@ from selenium import webdriver
 %matplotlib inline
 ```
 
-## Main coding for scraping qs ranking 2020
+## Main coding for scraping qs ranking 2020 table
 ```python
 def get_uni_information(year, unilist, page):
     url = r"https://www.topuniversities.com/university-rankings/world-university-rankings/{}".format(year)
@@ -76,11 +77,12 @@ def get_qs_ranking_dataframe(year, page):
     return df
 ```
 
-## Visualise top k universities
+## Visualise top universities
 ```python
 def visualise_qs_ranking(df, year, top_ranking, num):
     """
     df: dataframe
+    year: year of the qs ranking
     top_ranking: top # of universities to be selected
     num: # of countries to be visaulised
     """
