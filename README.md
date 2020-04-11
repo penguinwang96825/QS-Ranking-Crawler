@@ -1,5 +1,5 @@
 # QS Ranking Web Scraping
-A note to build a web scraper by using beautifulsoup and selenium. This program crawls [QS Rankings](https://www.topuniversities.com/qs-world-university-rankings) to discover the top universities from all over the world. Uni name, ranking and location are fetched from the table and stored as a csv file.
+A note to build a web scraper by using beautifulsoup and selenium. This program crawls [QS Rankings](https://www.topuniversities.com/qs-world-university-rankings) to discover the top universities from all over the world. Uni name, ranking and location are fetched from the table and stored as a csv file. Jupyter notebook is available as well through this [link](https://github.com/penguinwang96825/QS_ranking_web_scraping/blob/master/QS.ipynb).
 
 ## Import packages
 Download chrome web dirver first. [[Click here](https://sites.google.com/a/chromium.org/chromedriver/)]
