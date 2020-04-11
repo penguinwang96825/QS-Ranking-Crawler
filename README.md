@@ -1,8 +1,9 @@
 # QS Ranking Web Scraping
-A note to build a web scraper by using beautifulsoup and selenium.
+A note to build a web scraper by using beautifulsoup and selenium. This program crawls [QS Rankings](https://www.topuniversities.com/qs-world-university-rankings) to fetch the table of the rankings. Uni name, ranking and the location are fetched from the table and stored as a csv file.
 
 ## Import packages
 Download chrome web dirver first. [[Click here](https://sites.google.com/a/chromium.org/chromedriver/)]
+
 ```python
 import pandas as pd
 import numpy as np
@@ -15,7 +16,15 @@ from selenium import webdriver
 %matplotlib inline
 ```
 
-## Main coding for scraping qs ranking 2020 table
+## Main code
+Only 25 universities are listed on the table per page, so I have to set the number of page I want to crawl. (max page: 40)
+
+1. Open the html via chrome driver. (make sure `webdriver.exe` is in the same directory)
+2. Parse the html using `BeautifulSoup`.
+3. Create a loop to crawl all the elements (ranking, uni name, location) in each row.
+4. Click to the next page and start over the loop in step three.
+5. Stop fetching the data until all pages are done.
+
 ```python
 def get_uni_information(year, unilist, page):
     url = r"https://www.topuniversities.com/university-rankings/world-university-rankings/{}".format(year)
@@ -32,7 +41,7 @@ def get_uni_information(year, unilist, page):
         soup = BeautifulSoup(driver.page_source, "html.parser")
         # Find the table which contains the ranking information of every universities
         x = soup.find(name="table", attrs={"class": "dataTable no-footer"})
-        # Use for loop to catch every rows in the table, and append the rows into the list
+        # Use 'for' loop to catch every rows in the table, and append the rows into the list
         for tr in x.find(name="tbody"):
             try: 
                 tds = tr('td')
@@ -61,6 +70,9 @@ def get_uni_information(year, unilist, page):
 ```
 
 ## Get the dataframe
+Using `get_uni_information` function to crawl the information and then store them into a dataframe.
+Also do some dataframe preprocessing in order to make sure every columns are in right data types.
+
 ```python
 def get_qs_ranking_dataframe(year, page):
     unilist = []
@@ -76,8 +88,23 @@ def get_qs_ranking_dataframe(year, page):
     
     return df
 ```
+### Take a look at the dataframe
+```python
+qs_2020 = get_qs_ranking_dataframe(year=2020, page=40)
+qs_2020[(qs_2020["location"] == "Japan") & (qs_2020["ranking"] <= 100)]
+```
+
+| ranking | uni | location |
+| --- | --- | --- |
+| 23 | The University of Tokyo | Japan |
+| 34 | Kyoto University | Japan |
+| 59 | Tokyo Institute of Technology (Tokyo Tech) | Japan |
+| 71 | Osaka University | Japan |
+| 82 | Tohoku University | Japan |
 
 ## Visualise top universities
+Plot top `top_ranking` universities and show top `num` countries in the image of the certain year.
+
 ```python
 def visualise_qs_ranking(df, year, top_ranking, num):
     """
@@ -97,16 +124,3 @@ def visualise_qs_ranking(df, year, top_ranking, num):
     ax.set_xticks(np.arange(0, top['location'].value_counts()[0]+2, 1))
 ```
 
-## Do some visualisation
-```python
-qs_2020 = get_qs_ranking_dataframe(year=2020, page=40)
-qs_2020[(qs_2020["location"] == "Japan") & (qs_2020["ranking"] <= 100)]
-```
-
-| ranking | uni | location |
-| --- | --- | --- |
-| 23 | The University of Tokyo | Japan |
-| 34 | Kyoto University | Japan |
-| 59 | Tokyo Institute of Technology (Tokyo Tech) | Japan |
-| 71 | Osaka University | Japan |
-| 82 | Tohoku University | Japan |
