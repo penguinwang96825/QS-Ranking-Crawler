@@ -26,7 +26,7 @@ Only 25 universities are listed on the table per page, so I have to set the numb
 5. Stop fetching the data until all pages are done.
 
 ```python
-def get_uni_information(year, unilist, page):
+def get_uni_information(year=2020, unilist, page=40):
     url = r"https://www.topuniversities.com/university-rankings/world-university-rankings/{}".format(year)
     # Open url and get the QS Ranking html page
     driver_path = r"C:\Users\YangWang\Desktop\machineLearning\indiaNewsClassification\chromedriver.exe"
@@ -35,35 +35,38 @@ def get_uni_information(year, unilist, page):
     driver.get(url)
     time.sleep(5)
     
-    # Scrawl all the pages (max page is 40)
-    for _ in range(int(page)):
-        # Use BeautifulSoup to parse every page
-        soup = BeautifulSoup(driver.page_source, "html.parser")
-        # Find the table which contains the ranking information of every universities
-        x = soup.find(name="table", attrs={"class": "dataTable no-footer"})
-        # Use 'for' loop to catch every rows in the table, and append the rows into the list
-        for tr in x.find(name="tbody"):
-            try: 
-                tds = tr('td')
-                if tds[0].find(name="span") is not None:
-                    rank = tds[0].find(name="span").string
-                else: 
-                    rank = None
-                if tds[1].find(name="a") is not None:
-                    uni = tds[1].find(name="a").string
-                else: 
-                    uni = None
-                if tds[2].find(attrs={"class": "td-wrap"}) is not None:
-                    location = tds[2].find(attrs={"class": "td-wrap"}).string
-                else: 
-                    location = None
-            except (RuntimeError, TypeError, NameError):
-                pass
-            unilist.append([rank, uni, location])
-        # Click next page button
-        element = driver.find_element_by_xpath('//*[@id="qs-rankings_next"]')
-        driver.execute_script("arguments[0].click();", element)
-        time.sleep(5)
+    # Crawl all the pages (max page is 40)
+    if page <=40: 
+        for _ in range(int(page)):
+            # Use BeautifulSoup to parse every page
+            soup = BeautifulSoup(driver.page_source, "html.parser")
+            # Find the table which contains the ranking information of every universities
+            x = soup.find(name="table", attrs={"class": "dataTable no-footer"})
+            # Use 'for' loop to catch every rows in the table, and append the rows into the list
+            for tr in x.find(name="tbody"):
+                try: 
+                    tds = tr('td')
+                    if tds[0].find(name="span") is not None:
+                        rank = tds[0].find(name="span").string
+                    else: 
+                        rank = None
+                    if tds[1].find(name="a") is not None:
+                        uni = tds[1].find(name="a").string
+                    else: 
+                        uni = None
+                    if tds[2].find(attrs={"class": "td-wrap"}) is not None:
+                        location = tds[2].find(attrs={"class": "td-wrap"}).string
+                    else: 
+                        location = None
+                except (RuntimeError, TypeError, NameError):
+                    pass
+                unilist.append([rank, uni, location])
+            # Click next page button
+            element = driver.find_element_by_xpath('//*[@id="qs-rankings_next"]')
+            driver.execute_script("arguments[0].click();", element)
+            time.sleep(5)
+        else:
+            print("Max page is 40.")
     
     driver.quit()
     return unilist
@@ -74,7 +77,7 @@ Using `get_uni_information` function to crawl the information and then store the
 Also do some dataframe preprocessing in order to make sure every columns are in right data types.
 
 ```python
-def get_qs_ranking_dataframe(year, page):
+def get_qs_ranking_dataframe(year=2020, page=40):
     unilist = []
     unilist = get_uni_information(year, unilist, page)
     df = pd.DataFrame(unilist)
