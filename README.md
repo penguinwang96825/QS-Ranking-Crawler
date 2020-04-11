@@ -40,7 +40,7 @@ def get_uni_information(year=2020, unilist, page=40):
         for _ in range(int(page)):
             # Use BeautifulSoup to parse every page
             soup = BeautifulSoup(driver.page_source, "html.parser")
-            # Find the table which contains the ranking information of every universities
+            # Find the table which contains the information I want
             x = soup.find(name="table", attrs={"class": "dataTable no-footer"})
             # Use 'for' loop to catch every rows in the table, and append the rows into the list
             for tr in x.find(name="tbody"):
