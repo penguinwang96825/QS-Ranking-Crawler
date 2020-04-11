@@ -36,7 +36,7 @@ def get_uni_information(year=2020, unilist, page=40):
     time.sleep(5)
     
     # Crawl all the pages (max page is 40)
-    if page <=40: 
+    if page <= 40: 
         for _ in range(int(page)):
             # Use BeautifulSoup to parse every page
             soup = BeautifulSoup(driver.page_source, "html.parser")
@@ -65,8 +65,8 @@ def get_uni_information(year=2020, unilist, page=40):
             element = driver.find_element_by_xpath('//*[@id="qs-rankings_next"]')
             driver.execute_script("arguments[0].click();", element)
             time.sleep(5)
-        else:
-            print("Max page is 40.")
+    else:
+        print("Max page is 40.")
     
     driver.quit()
     return unilist
