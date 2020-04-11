@@ -103,7 +103,7 @@ qs_2020[(qs_2020["location"] == "Japan") & (qs_2020["ranking"] <= 100)]
 | 82 | Tohoku University | Japan |
 
 ## Visualise top universities
-Plot top `top_ranking` universities and show top `num` countries in the image of the certain year.
+Visualise top `top_ranking` universities and show top `num` countries in the image of the certain year.
 
 ```python
 def visualise_qs_ranking(df, year, top_ranking, num):
